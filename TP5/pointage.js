@@ -40,7 +40,7 @@ function main() {
     for(var i=0 ; i< 100; i++) {
         var sphere = new Object();
         var geometry = new THREE.SphereGeometry(Math.random() * (6 - 1) + 1, 32, 32);
-        sphere.materialAlea = new THREE.MeshBasicMaterial({color: getRandomColor()});
+        sphere.materialAlea = new THREE.MeshPhongMaterial({color: getRandomColor()});
         sphere.materialUnique = new THREE.MeshBasicMaterial({color: rgbToHex(0,0,i%255)});
         sphere.mesh = new THREE.Mesh(geometry);
         sphere.mesh.position.x = Math.random() * (51 - (-50)) + (-50);
@@ -55,7 +55,7 @@ function main() {
     // Puis stocker les spheres sous forme d'OBJETS avec 3 attributs (un pour la Mesh, un autre pour le material concernant les couleurs aleatoires, et un autre pour le material avec les couleurs uniques)
 
     light = new THREE.PointLight( 0xffffff, 1, 0, 2 );
-    light.position.set(0,0,0);
+    light.position.set(100,10,200);
     scene.add(light);
 
     camera.position.z = 200;
@@ -86,6 +86,7 @@ function pointage() {
     // Recupere la couleur pointe sous le curseur de la souris
     var couleur = new Uint8Array(4);
     gl.readPixels(mouse.x, renderer.domElement.height - mouse.y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, couleur);
+    //console.log('Color: ' + couleur);
 
     // On retrouve l'index correspondant dans le tableau a partir de la couleur
     var id = (couleur[0] << 16) | (couleur[1] << 8) | (couleur[2]);
@@ -97,7 +98,7 @@ function pointage() {
     });
     // Faire le rendu avec les couleurs ALEATOIRES (= les couleurs propres des spheres)
 
-    if(data){
+    if(id >=0 && id <=100){
         sphere.mesh.material = new THREE.MeshBasicMaterial({color: '#FFFF00'});
         // Afficher la sphere pointee en jaune
     }
